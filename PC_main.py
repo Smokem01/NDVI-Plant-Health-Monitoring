@@ -33,7 +33,7 @@ def main():
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     out = None 
 
-    max_frames = 108000  # Approximately 1 hour at 30 FPS, might be inaccurate depending on processing time
+    max_frames = 108000  # approx. 1hr at 30 FPS, might be inaccurate depending on processing time
     buffer = deque(maxlen=max_frames)
 
     tot_frames = 0
@@ -62,8 +62,8 @@ def main():
 
             tot_frames += 1
 
-            #This is completely optional, just an every-second update
-            if tot_frames % 30 == 0:  # assuming 30 FPS for most webcams
+            #this is completely optional, just a periodic terminal
+            if tot_frames % 30 == 0:  #30 FPS
                 elapsed_time = time.time() - start_time
                 print(f"Processed {tot_frames} frames. Elapsed time: {elapsed_time:.2f} seconds")
 
