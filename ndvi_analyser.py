@@ -101,22 +101,22 @@ class NDVIAnalyzer:
                                     f"{level.name}: {percentage*100:.1f}% "
                                 )
         
-        max_possible_score = sum(level.value for level in self.thresholds.keys())
-        normalized_health_score = (score / max_possible_score) * 100
+        max_score = sum(level.value for level in self.thresholds.keys())
+        final_score = (score / max_score) * 100
         
         return  {
                     "status": "COMPLETE",
                     "plant_percentage": plant_percentage,
-                    "health_score": normalized_health_score,
+                    "health_score": final_score,
                     "color_percentages": {level.name: pct*100 for level, pct in percentages.items()},
                     "analysis": "\n".join(analysis)
                 }
 
     def visualize_analysis(self, ndvi_image):
-        plant_mask = self.identify_plant_area(ndvi_image)
-        contours, _ = cv2.findContours(plant_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        shape = self.identify_plant_area(ndvi_image)
+        contours, _ = cv2.findContours(shape, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
         visualization = ndvi_image.copy()
         cv2.drawContours(visualization, contours, -1, (0, 255, 0), 2)
-        
+        #this function is soon to be changed again (until I learn more on how to better visualize analyzed area as this almost returns the same image)
         return visualization
