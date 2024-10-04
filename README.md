@@ -1,33 +1,57 @@
-# NDVI Processing Application
+# NDVI Plant Health Monitoring System
 
-This application captures video from a camera (either a standard webcam or a Raspberry Pi camera module), processes each frame to calculate the Normalized Difference Vegetation Index (NDVI), and saves the processed video. It's designed to run continuously, saving the last hour of footage.
+This application captures daily images using a Raspberry Pi camera module, processes them to calculate the Normalized Difference Vegetation Index (NDVI), analyzes plant health, and saves both the processed images and analysis results. It's designed to run automatically, taking daily snapshots at a specified time and providing detailed health analysis of monitored plants.
 
 ## Features
 
-- Real-time NDVI processing of video frames
-- Support for both standard webcams (PC version) and Raspberry Pi camera module
-- Circular buffer to store the last hour of footage
-- Automatic ID system for naming output files
-- Progress tracking and error handling
+- Automated daily NDVI image capture and processing
+- Advanced plant health analysis using color-based NDVI levels
+- Visualization of plant areas and health indicators
+- Detailed analysis reports including plant coverage and health scores
+- Automatic file naming with timestamps
+- Robust error handling and logging
+
+## Important Note on Threshold Parameters
+
+**PLEASE NOTE**: The current threshold parameters used in the health analysis are placeholders and do not represent accurate values for plant health assessment. These parameters will be corrected and updated following a precise and thorough data collection process. Users should be aware that current health assessments may not be accurate and should be considered experimental until the parameters are properly calibrated.
+
+## Versions
+
+### Raspberry Pi Version
+- Uses Raspberry Pi NoIR Camera Module or HQ Camera Module
+- Optimized for 24/7 operation on Raspberry Pi hardware
+
+### PC Version (Coming Soon)
+- Will support various USB NIR-capable cameras
+- Same functionality as Raspberry Pi version
+- Adapted for standard computer hardware
+- Will include specific camera recommendations and setup instructions
 
 ## Requirements
 
-### For PC Version
-#### Software:
-- Python 3.x
-- OpenCV (`cv2`)
-- NumPy
-#### Hardware:
-- Any USB webcam supporting NIR (Near-Infrared) captures
-
 ### For Raspberry Pi Version
+#### Hardware:
+- Raspberry Pi (any model supporting camera modules)
+- Raspberry Pi NoIR Camera Module or HQ Camera Module
+
 #### Software:
 - Python 3.x
 - OpenCV (`cv2`)
 - NumPy
 - picamera2
+- schedule
+
+### For PC Version (Coming Soon)
 #### Hardware:
-- Raspberry Pi Noir or HQ Camera module, or similar
+- PC with USB port
+- NIR-capable USB camera (specific models to be listed)
+
+#### Software:
+- Python 3.x
+- OpenCV (`cv2`)
+- NumPy
+- schedule
+- Additional camera drivers (to be specified)
 
 ## Installation
 
@@ -38,42 +62,58 @@ This application captures video from a camera (either a standard webcam or a Ras
    ```
 
 2. Install the required packages:
+   For Raspberry Pi:
    ```
-   pip install opencv-python numpy
+   pip install opencv-python numpy picamera2 schedule
    ```
-
-   For Raspberry Pi, also install picamera2:
+   
+   For PC (Coming Soon):
    ```
-   pip install picamera2
+   pip install opencv-python numpy schedule
    ```
 
 ## Usage
 
-### PC Version (with standard webcam)
-
-Run the main script:
+Run the daily checker script:
 
 ```
-python PC_main.py
+python daily_checker.py
 ```
 
-### Raspberry Pi Version
-
-Run the Raspberry Pi specific script:
-
-```
-python RPi_main.py
-```
+By default, the script will:
+- Capture an image daily at 9:00 AM
+- Process the image for NDVI analysis
+- Generate health analysis and visualization
+- Save results in the 'results' directory
 
 ## File Structure
 
-- `main_pc.py`: Main script for PC with standard webcam
-- `main_raspberry.py`: Main script for Raspberry Pi
+- `daily_checker.py`: Main script for scheduling and running daily captures
 - `ndvi_processor.py`: Contains the NDVIProcessor class for NDVI calculations
-- `id.txt`: Stores the current ID for naming output files
-- `outputs/`: Directory where processed videos are saved
+- `ndvi_analyser.py`: Contains the NDVIAnalyzer class for health analysis
+- `color_map.py`: Defines the color mapping for NDVI visualization
+- `results/`: Directory where processed images and analysis reports are saved
+
+## Output Files
+
+For each capture, the system generates:
+- A visualization image with plant area highlighted and health indicators (`result-vis-[timestamp].png`)
+- A text file with detailed analysis (`result-[timestamp].txt`)
 
 ## Customization
 
-- Adjust the `max_frames` variable in the main scripts to change the duration of saved footage.
-- Modify the `process_image` method in `NDVIProcessor` class to change how NDVI is calculated or to add additional processing steps.
+- Modify the capture time in `daily_checker.py` by changing the scheduled time
+- Adjust health level thresholds in `ndvi_analyser.py` (Note: current thresholds are placeholders)
+- Customize the color map in `color_map.py` for different visualization preferences
+
+## Future Updates
+
+- Release of PC version with support for various USB NIR cameras
+- Calibration of accurate threshold parameters based on thorough data collection
+- Additional visualization options
+- Web interface for remote monitoring (planned)
+
+## Current Limitations
+
+- Health assessment thresholds are currently placeholder values and will be updated
+- Analysis results should be considered experimental until proper calibration is completed
