@@ -84,7 +84,7 @@ class NDVIAnalyzer:
                         "status": "NO DETECTION",
                         "plant_pixel_area": 0,
                         "health_score": 0,
-                        "analysis": "No living plant material found in the image."
+                        "analysis": "No living vegetation found in the image."
                     }
         
         score = 0
@@ -93,16 +93,15 @@ class NDVIAnalyzer:
         plant_percentage = (area / img_size) * 100
         
         for level, percentage in percentages.items():
-            if level in self.thresholds:
                 threshold = self.thresholds[level]
-                weighted_score = min(percentage / threshold, 1.0) * level.value
-                score += weighted_score
+                curr = min(percentage/threshold, 1.0) * level.value
+                score += curr
                 analysis.append (
                                     f"{level.name}: {percentage*100:.1f}% "
                                 )
         
         max_score = sum(level.value for level in self.thresholds.keys())
-        final_score = (score / max_score) * 100
+        final_score = (score / max_score)*100
         
         return  {
                     "status": "COMPLETE",
