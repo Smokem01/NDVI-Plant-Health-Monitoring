@@ -16,23 +16,23 @@ class NDVIAnalyzer:
         self.color_ranges = {
                                 HealthLevel.LEVEL_4: 
                                 (
-                                    np.array([0, 0, 14], dtype=np.uint8),
-                                    np.array([14, 0, 255], dtype=np.uint8)
+                                    np.array([14, 0, 255], dtype=np.uint8),
+                                    np.array([239, 0, 255], dtype=np.uint8)
                                 ),
                                 HealthLevel.LEVEL_3: 
                                 (
-                                    np.array([0, 4, 0], dtype=np.uint8),
-                                    np.array([0, 255, 255], dtype=np.uint8)
+                                    np.array([0, 0, 255], dtype=np.uint8),
+                                    np.array([0, 249, 255], dtype=np.uint8)
                                 ),
                                 HealthLevel.LEVEL_2: 
                                 (
-                                    np.array([0, 255, 0], dtype=np.uint8),
+                                    np.array([0, 255, 7], dtype=np.uint8),
                                     np.array([0, 255, 255], dtype=np.uint8)
                                 ),
                                 HealthLevel.LEVEL_1: 
                                 (
-                                    np.array([175, 175, 96], dtype=np.uint8),
-                                    np.array([0, 255, 0], dtype=np.uint8)
+                                    np.array([0, 175, 0], dtype=np.uint8),
+                                    np.array([60, 255, 30], dtype=np.uint8)
                                 ),
                             }
         
@@ -52,7 +52,7 @@ class NDVIAnalyzer:
         for _, (lower, upper) in self.color_ranges.items():
             lvl_pixels = cv2.inRange(image, lower, upper)
             shape = cv2.bitwise_or(shape, lvl_pixels)
-        mask = np.ones((5,5), np.uint8)
+        mask = np.array([[0,0,1,0,0],[0,1,1,1,0],[1,1,1,1,1],[0,1,1,1,0],[0,0,1,0,0]])
         shape = cv2.morphologyEx(shape, cv2.MORPH_CLOSE, mask)
         shape = cv2.morphologyEx(shape, cv2.MORPH_OPEN, mask)
         #TLDR: this function returns a small image containing the shape of the tree or plant the camera is observing
@@ -111,11 +111,10 @@ class NDVIAnalyzer:
                     "analysis": "\n".join(analysis)
                 }
 
-    def visualize_analysis(self, ndvi_image):
+    def visualize_analysis(self, ndvi_image, image):
         shape = self.identify_plant_area(ndvi_image)
         contours, _ = cv2.findContours(shape, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        
-        visualization = ndvi_image.copy()
-        cv2.drawContours(visualization, contours, -1, (0, 255, 0), 2)
+        visualization = image.copy()
+        cv2.drawContours(image, contours, -1, (0, 255, 0), 2)
         #this function is soon to be changed again (until I learn more on how to better visualize analyzed area as this almost returns the same image)
         return visualization
