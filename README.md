@@ -82,7 +82,7 @@ This application captures daily images using a Raspberry Pi camera module, proce
 Run the daily checker script:
 
 ```
-python daily_checker.py
+python gui.py
 ```
 
 By default, the script will:
@@ -90,6 +90,7 @@ By default, the script will:
 - Process the image for NDVI analysis
 - Generate health analysis and visualization
 - Save results in the 'results' directory
+- Displays latest analysis results in `Latest Result` tab
 
 ## File Structure
 
