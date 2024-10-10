@@ -1,9 +1,12 @@
 # NDVI Plant Health Monitoring System
 
-This application captures daily images using a Raspberry Pi camera module, processes them to calculate the Normalized Difference Vegetation Index (NDVI), analyzes plant health, and saves both the processed images and analysis results. It's designed to run automatically, taking daily snapshots at a specified time and providing detailed health analysis of monitored plants.
+This application captures daily images using a Raspberry Pi camera module, processes them to calculate the Normalized Difference Vegetation Index (NDVI), analyzes plant health, and saves both the processed images and analysis results. It features a graphical user interface (GUI) for easy management of the monitoring system and health reports.
 
 ## Features
 
+- **Graphical User Interface** with two tabs:
+  - Start/Stop monitoring and display the next scheduled task
+  - View the latest health analysis and logs
 - Automated daily NDVI image capture and processing
 - Advanced plant health analysis using color-based NDVI levels
 - Visualization of plant areas and health indicators
@@ -31,15 +34,16 @@ This application captures daily images using a Raspberry Pi camera module, proce
 
 ### For Raspberry Pi Version
 #### Hardware:
-- Raspberry Pi (any model supporting camera modules)
-- Raspberry Pi NoIR Camera Module or HQ Camera Module
+- Raspberry Pi (any model supporting camera modules, tested on RPi 4 Model B)
+- Raspberry Pi NoIR Camera Module or HQ Camera Module or similar
 
 #### Software:
 - Python 3.x
-- OpenCV (`cv2`)
+- OpenCV
 - NumPy
 - picamera2
 - schedule
+- pillow
 
 ### For PC Version (Coming Soon)
 #### Hardware:
@@ -48,9 +52,10 @@ This application captures daily images using a Raspberry Pi camera module, proce
 
 #### Software:
 - Python 3.x
-- OpenCV (`cv2`)
+- OpenCV
 - NumPy
 - schedule
+- pillow
 - Additional camera drivers (to be specified)
 
 ## Installation
@@ -64,12 +69,12 @@ This application captures daily images using a Raspberry Pi camera module, proce
 2. Install the required packages:
    For Raspberry Pi:
    ```
-   pip install opencv-python numpy picamera2 schedule
+   pip install opencv-python numpy picamera2 schedule pillow
    ```
    
    For PC (Coming Soon):
    ```
-   pip install opencv-python numpy schedule
+   pip install opencv-python numpy schedule pillow
    ```
 
 ## Usage
@@ -77,7 +82,7 @@ This application captures daily images using a Raspberry Pi camera module, proce
 Run the daily checker script:
 
 ```
-python daily_checker.py
+python gui.py
 ```
 
 By default, the script will:
@@ -85,10 +90,12 @@ By default, the script will:
 - Process the image for NDVI analysis
 - Generate health analysis and visualization
 - Save results in the 'results' directory
+- Displays latest analysis results in `Latest Results` tab
 
 ## File Structure
 
-- `daily_checker.py`: Main script for scheduling and running daily captures
+- `gui.py`: Main interface for starting/stopping the system and viewing logs and analysis
+- `daily_checker.py`: Class responsible for scheduling and running daily captures
 - `ndvi_processor.py`: Contains the NDVIProcessor class for NDVI calculations
 - `ndvi_analyser.py`: Contains the NDVIAnalyzer class for health analysis
 - `color_map.py`: Defines the color mapping for NDVI visualization

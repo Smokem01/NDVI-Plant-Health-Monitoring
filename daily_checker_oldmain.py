@@ -28,11 +28,9 @@ def capture_and_process():
         visualization = analyzer.visualize_analysis(processed_frame)
         
         timestamp = datetime.now().strftime("%H-%M_%d-%m-%Y")
-        img = f"result-{timestamp}.png"
         visualized_img = f"result-vis-{timestamp}.png"
         analysis_results = f"result-{timestamp}.txt"
         
-        cv2.imwrite(os.path.join(results_dir, img), processed_frame)
         cv2.imwrite(os.path.join(results_dir, visualized_img), visualization)
         timestamp_for_txt = datetime.now().strftime("%H:%M_%d/%m/%Y")
         path = os.path.join(results_dir, img)
@@ -48,5 +46,12 @@ def capture_and_process():
     finally:
         camera.stop()
 
-def schedule_capture():
+def main():
+    print("Starting daily NDVI capture script...")
     schedule.every().day.at("09:00").do(capture_and_process)
+    while True:
+        schedule.run_pending()
+        time.sleep(3600) #here it checks every hour, change accordingly
+
+if __name__ == "__main__":
+    main()
