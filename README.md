@@ -90,7 +90,7 @@ By default, the script will:
 - Process the image for NDVI analysis
 - Generate health analysis and visualization
 - Save results in the 'results' directory
-- Displays latest analysis results in `Latest Result` tab
+- Displays latest analysis results in `Latest Results` tab
 
 ## File Structure
 
